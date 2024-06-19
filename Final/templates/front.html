@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <title>YouTube</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: black;
+        }
+
+        header {
+            background-color: black;
+            padding: 10px 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            color:white;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            color: #333;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .channel {
+            margin-bottom: 30px;
+            color:white;
+        }
+
+        .videos {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .video {
+            width: calc(25% - 20px);
+            margin-bottom: 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            position: relative;
+            height:365px ;
+            transition: all 0.4s ease;
+        }
+
+        .video iframe {
+            width: 100%;
+            height: 200px;
+            border: none;
+        }
+
+        .video h3 {
+            margin: 10px 20px;
+            font-size: 18px;
+        }
+
+        .video button {
+            padding: 8px 16px;
+            background-color: #cc0000;
+            color: #fff;
+            border: none;
+            font-size: 17px;
+            border-radius: 7px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            position: absolute; 
+            bottom: 10px; 
+            right: 10px;
+        }
+
+        .video button:hover {
+            background-color: #d14836;
+        }
+
+        .video .video-url {
+            position: absolute; 
+            bottom: 11px;
+            margin: 5px 20px;
+            color: white;
+        }
+
+        footer {
+            background-color: #f9f9f9;
+            padding: 20px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+        }
+
+        .search-container {
+            text-align: center;
+            margin-bottom: 30px;
+            margin-top: 20px;
+            color:black;
+            display: none;
+        }
+
+        .but{
+            display: none;
+        }
+
+        .fas{
+            color:rgb(250, 250, 0);
+        }
+
+        .far{
+            color:rgb(255, 255, 0);
+        }
+        
+        .search-container input[type=text] {
+            padding: 10px;
+            width: 50%;
+            border-radius: 30px;
+            border: 1px solid #ccc;
+            margin-right: 10px;
+            box-sizing: border-box;
+            font-size: 17px;
+        }
+
+        .search-container button {
+            padding: 10px 20px;
+            background-color: #cc0000;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .search-container button:hover {
+            background-color: #eb7a69;
+            border-radius: 20px;
+        }
+
+        .vsp{
+            margin-left: 10%;
+            display:flex;
+            justify-content:left;
+            display: none;
+        }
+
+        .vsp button{
+            position: relative;
+            padding: 10px 20px;
+            margin:0px 10px;
+            background-color: transparent;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size:17px;
+        }
+
+        .vsp button::after{
+            content: ''; 
+            position: absolute;
+            left: 15px;
+            bottom: 0;
+            width: 70%;
+            height: 2px; 
+            background-color: #fff;
+            transform: scaleX(0); 
+            transition: transform 0.4s ease; 
+        }
+
+        .vsp button:hover::after{
+            transform: scaleX(1);
+        }
+
+        .vp{
+            margin-left: 10%;
+            display:flex;
+            justify-content:left;
+            display: none;
+            position: absolute;
+            top:80px;
+            left:20px;
+        }
+
+        .vp button{
+            position: relative;
+            padding: 10px 20px;
+            margin:0px 10px;
+            background-color: transparent;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size:17px;
+        }
+
+        .vp button::after{
+            content: ''; 
+            position: absolute;
+            left: 15px;
+            bottom: 0;
+            width: 70%;
+            height: 2px; 
+            background-color: #fff;
+            transform: scaleX(0); 
+            transition: transform 0.4s ease; 
+        }
+
+        .vp button:hover::after{
+            transform: scaleX(1);
+        }
+
+        .youtube-icon {
+        font-size: 35px; 
+        margin-left: 10px;
+        margin-top: 15px;
+        }
+
+        .youtube{
+            font-size: 25px;
+            margin-bottom:5px;
+        }       
+
+        .menu-icon {
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            padding: 5px;
+            margin-right: 10px;
+        }
+
+        .line {
+            width: 24px; 
+            height: 2.5px;
+            background-color: white;
+            margin: 4px 0; 
+            transition: transform 0.3s ease; 
+        }
+
+
+        .menu-icon.open .line:nth-child(1) {
+            transform: translateY(6px) rotate(45deg);
+        }
+
+        .menu-icon.open .line:nth-child(2) {
+            opacity: 0; 
+        }
+
+        .menu-icon.open .line:nth-child(3) {
+            transform: translateY(-6px) rotate(-45deg);
+        }
+
+        .menu-icon:hover {
+            box-shadow: 0 0 10px rgba(128, 128, 128, 0.5);
+            border-radius: 100px;
+            background-color:rgb(54, 53, 53); 
+        }
+
+        .modal {
+            margin-top: 60px;
+            margin-left: 15px;
+            color:white;
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5); 
+            box-shadow: 0 0 10px rgba(128, 128, 128, 0.5);
+        }
+
+        .close {
+            color: #aaa;
+            background-color: transparent;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;  
+            border:none;
+        }
+
+        .close:hover, .close:focus {
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .menu-button {
+            color:white;
+            display: block;
+            margin: 10px 0;
+            padding: 10px 20px;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 17px;
+        }
+
+        .menu-button:hover {
+            background-color:rgb(54, 53, 53);
+            border-radius: 80px;
+        }
+
+        .hidevideos{
+            display:none;
+            margin-top: 140px;
+            margin-left: 130px;
+        }
+
+        .but{
+            position: absolute;
+            top:50px;
+            right:90px;
+        }
+
+        #selectLanguage {
+            height: 40px; 
+            width:auto;
+            font-size: 17px;
+            border-radius: 20px;
+        }
+
+        .custom-select select {
+        display: none;
+        }
+
+        .custom-select::after {
+        content: '\25BC'; 
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        pointer-events: none; 
+        }
+
+     
+        .custom-select select option {
+        padding: 10px;
+        background-color: black;
+        color: white;
+        }
+
+        .custom-select select option:hover {
+        background-color: black;
+        color:white;
+        }
+
+        .custom-select select option:checked {
+        background-color: black;
+        color: white;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <button class="menu-icon" onclick="toggleMenu()">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+        </button>
+
+        <i class="fab fa-youtube youtube-icon"></i>
+        <span class="youtube">YouTube</span>
+        <div class="search-container" >
+            <form id="searchForm">
+                <input id="searchInput" type="text" placeholder="Search for YouTube videos..." required>
+                <button type="submit">Search</button>
+            </form>
+        </div>
+
+        <div class="but">
+            <form id="searchButton">
+                <select id="selectLanguage" class="custom-select" onchange="handleSelectChange()">
+                    <option value="ai">Artificial Intelligence</option>
+                    <option value="c">C programming</option>
+                    <option value="csharp">C-Sharp</option>
+                    <option value="css">CSS</option>
+                    <option value="data_structures">Data Structures</option>
+                    <option value="dl">Deep Learning</option>
+                    <option value="html">HTML</option>
+                    <option value="java">Java</option>
+                    <option value="javascript">JavaScript</option>
+                    <option value="ml">Machine Learning</option>
+                    <option value="mysql">SQL</option>
+                    <option value="nodejs">Nodejs</option>
+                    <option value="python">Python</option>
+                    <option value="reactjs">Reactjs</option>
+                    <option value="web">Web</option>
+                </select>
+            </form>
+        </div>
+        
+        <div class="vsp">
+            <button id="videos">Videos</button>
+            <button id="shots">Shorts</button>
+            <button id="playlists">PlayLists</button>
+        </div>
+
+        <div class="vp">
+            <button id="videosr">Videos</button>
+            <button id="playlistsr">PlayLists</button>
+        </div>
+
+        <div class="hidevideos">
+            <h1>Top 3 Rated Videos</h1>
+            {% set video_id_1 = '' %}
+            {% set video_id_2 = '' %}
+            {% set video_id_3 = '' %}
+
+            {% set rating_id_1 = '' %}
+            {% set rating_id_2 = '' %}
+            {% set rating_id_3 = '' %}
+            
+            {% for video in result %}
+                {% if loop.index == 1 %}
+                    {% set video_id_1 = video.url.split('=')[1] %}
+                {% elif loop.index == 2 %}
+                    {% set video_id_2 = video.url.split('=')[1] %}
+                {% elif loop.index == 3 %}
+                    {% set video_id_3 = video.url.split('=')[1] %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    </header>
+
+    <div class="modal">
+        <button class="close" onclick="toggleMenu()">&times;</button>
+        <button class="menu-button" onclick="searchHome()">Home</button>
+        <button class="menu-button" onclick="searchOpen()">Search</button>
+        <button class="menu-button" onclick="searchRecommend()">Recommendations</button>
+    </div>
+
+    <div class="container">
+        <div class="channel">
+            <div class="videos" id="videosContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            var modal = document.getElementsByClassName("modal")[0];
+            modal.style.display = modal.style.display === "block" ? "none" : "block";
+        }
+
+        function searchHome(){
+            var modal = document.getElementsByClassName("modal")[0];
+            modal.style.display = modal.style.display === "block" ? "none" : "block";
+            var s = document.getElementsByClassName("search-container")[0];
+            s.style.display ="none";
+            var s = document.getElementsByClassName("vp")[0];
+            s.style.display ="none";
+            var s = document.getElementsByClassName("vsp")[0];
+            s.style.display ="none";
+            var s = document.getElementsByClassName("but")[0];
+            s.style.display ="none";
+            var s = document.getElementsByClassName("hidevideos")[0];
+            s.style.display ="none";
+            var initialVideoIds = ['GhQdlIFylQ8','NT299zIk2JY', 'BGTx91t8q50', 'EjavYOFoJJ0', 'xk4_1vDrzzo','B31LgI4Y4DQ','bxRVz8zklWM','pkYVOmU3MgA','7S_tz1z_5bA','HXV3zeQKqGY','G3e-cpL7ofc','kqtD5dpn9C8','JMUxmLyrhSk','qz0aGYrrlhU','zfiSAzpy9NM','SqcY0GlETPk','SXVrkIUXXw8'];
+            var videosContainer = document.getElementById('videosContainer');
+            videosContainer.innerHTML='';
+            initialVideoIds.forEach(videoId => {
+                getVideoTitle(videoId, videosContainer);
+            });
+        }
+
+        function searchOpen(){
+            var videosContainer = document.getElementById('videosContainer');
+            videosContainer.innerHTML='';
+            var s = document.getElementsByClassName("vp")[0];
+            s.style.display ="none";
+            var modal = document.getElementsByClassName("modal")[0];
+            modal.style.display = modal.style.display === "block" ? "none" : "block";
+            var s = document.getElementsByClassName("search-container")[0];
+            s.style.display ="block";
+            var v = document.getElementsByClassName("vsp")[0];
+            v.style.display ="none";
+            var s = document.getElementsByClassName("hidevideos")[0];
+            s.style.display ="none";
+            var s = document.getElementsByClassName("but")[0];
+            s.style.display ="none";
+        }
+
+        function searchRecommend(){
+            var videosContainer = document.getElementById('videosContainer');
+            videosContainer.innerHTML='';
+            var s = document.getElementsByClassName("vp")[0];
+            s.style.display ="none";
+            var modal = document.getElementsByClassName("modal")[0];
+            modal.style.display = modal.style.display === "block" ? "none" : "block";
+            var s = document.getElementsByClassName("but")[0];
+            s.style.display ="block";
+            var s = document.getElementsByClassName("search-container")[0];
+            s.style.display ="none";
+            var v = document.getElementsByClassName("vsp")[0];
+            v.style.display ="none";
+            var s = document.getElementsByClassName("hidevideos")[0];
+            s.style.display ="none";
+        }
+        
+        function video(event){
+            searchVideos(event);
+        }
+
+        function shot(event){
+            searchShots(event);
+        }
+
+        function playlist(event){
+            searchPlaylists(event);
+        }
+
+        
+        var apiKey = 'AIzaSyAGH6Zrs1fMPijKyPWRxyVXiVCuBpfK3Eg';
+        
+        function searchVideos(event) {
+            event.preventDefault(); 
+            var searchInput = document.getElementById("searchInput").value;
+            if (searchInput.trim() !== "") {
+                var apiUrl = 'https://www.googleapis.com/youtube/v3/search?key=' + apiKey + '&q=' + searchInput + '&part=snippet&type=video&maxResults=32';
+
+                fetch(apiUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        var videosContainer = document.getElementById('videosContainer');
+                        videosContainer.innerHTML = ''; 
+                        var videoItems = data.items.filter(item => item.id.kind === 'youtube#video');
+                        var videoIds = videoItems.map(item => item.id.videoId);
+                        videoIds.forEach(videoId => {
+                            getVideoDetails(videoId, videosContainer); 
+                        });
+                    })
+                    .catch(error => console.error('Error fetching search results:', error));
+            }
+
+        }
+
+        function getVideoDetails(videoId, container) {
+            fetch('https://www.googleapis.com/youtube/v3/videos?id=' + videoId + '&key='+apiKey+'&part=contentDetails')
+            .then(response => response.json())
+            .then(data => {
+                if (data.items && data.items.length > 0 && data.items[0].contentDetails) {
+                    var duration = data.items[0].contentDetails.duration;
+                    var durationSeconds = parseDuration(duration);
+                    if (durationSeconds > 300) {
+                        getVideoTitle(videoId, container); 
+                    }
+                } else {
+                    console.log('Video with ID ' + videoId + ' is unavailable.');
+                }
+            })
+            .catch(error => console.error('Error fetching video details:', error));
+        }
+
+        function parseDuration(duration) {
+            var matches = duration.match(/[0-9]+[HMS]/g);
+            var durationSeconds = 0;
+            matches.forEach(function (part) {
+                var unit = part.charAt(part.length - 1);
+                var amount = parseInt(part.slice(0, -1));
+                switch (unit) {
+                    case 'H':
+                        durationSeconds += amount * 3600;
+                        break;
+                    case 'M':
+                        durationSeconds += amount * 60;
+                        break;
+                    case 'S':
+                        durationSeconds += amount;
+                        break;
+                }
+            });
+            return durationSeconds;
+        }
+
+        function getVideoTitle(videoId, container) {
+            fetch('https://www.googleapis.com/youtube/v3/videos?id=' + videoId + '&key='+apiKey+'&part=snippet,status')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.items && data.items.length > 0 && data.items[0].snippet.title) {
+                        var title = data.items[0].snippet.title;
+                        var status = data.items[0].status;
+                        if (status.embeddable) {
+                            container.innerHTML += '<div class="video"><iframe width="560" height="315" src="https://www.youtube.com/embed/' + videoId + '" frameborder="0" allowfullscreen></iframe><h3>' + title + '</h3><button class="rating'+videoId+'" onclick="handleButtonClick(\'' + videoId + '\')">Rating</button><p class="video-url" id="videoUrl_' + videoId + '"></p></div>';
+                        } else {
+                            console.log('Video with ID ' + videoId + ' does not allow embedding. Skipping...');
+                        }
+                    } else {
+                        console.log('Video with ID ' + videoId + ' is unavailable. Skipping...');
+                    }
+                })
+                .catch(error => console.error('Error fetching video title:', error));
+        }
+
+        function searchShots(event) {
+            event.preventDefault(); 
+            var searchInput = document.getElementById("searchInput").value;
+            if (searchInput.trim() !== "") {
+                var apiUrl = 'https://www.googleapis.com/youtube/v3/search?key=' + apiKey + '&q=' + searchInput + '&part=snippet&type=video&maxResults=32&videoDuration=short';
+
+                fetch(apiUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        var videosContainer = document.getElementById('videosContainer');
+                        videosContainer.innerHTML = ''; 
+                        var videoItems = data.items.filter(item => item.id.kind === 'youtube#video'); 
+                        var videoIds = videoItems.map(item => item.id.videoId);
+                        videoIds.forEach(videoId => {
+                            getVideoTitle(videoId, videosContainer);
+                        });
+                    })
+                    .catch(error => console.error('Error fetching search results:', error));
+            }
+        }
+
+        function searchPlaylists(event) {
+            event.preventDefault(); 
+            var searchInput = document.getElementById("searchInput").value;
+            if (searchInput.trim() !== "") {
+                var apiUrl = 'https://www.googleapis.com/youtube/v3/search?key=' + apiKey + '&q=' + searchInput + '&part=snippet&type=playlist&maxResults=32';
+
+                fetch(apiUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        var videosContainer = document.getElementById('videosContainer');
+                        videosContainer.innerHTML = ''; 
+                        var playlistItems = data.items.filter(item => item.id.kind === 'youtube#playlist'); 
+                        var playlistIds = playlistItems.map(item => item.id.playlistId);
+                        playlistIds.forEach(playlistId => {
+                            getPlaylistDetails(playlistId, videosContainer); 
+                        });
+                    })
+                    .catch(error => console.error('Error fetching search results:', error));
+            }
+        }
+        
+        function getPlaylistDetails(playlistId, container) {
+            fetch('https://www.googleapis.com/youtube/v3/playlists?id=' + playlistId + '&key='+apiKey+'&part=snippet')
+            .then(response => response.json())
+            .then(data => {
+                if (data.items && data.items.length > 0 && data.items[0].snippet) {
+                    var title = data.items[0].snippet.title;
+                    container.innerHTML += '<div class="video"><iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?list=' + playlistId + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><h3>' + title + '</h3><button class="rating'+playlistId+'" onclick="handleButtonClickPlaylist(\'' + playlistId + '\')">Rating</button><p class="video-url" id="videoUrl_' + playlistId + '"></p></div>';
+                        
+                } else {
+                    console.log('Playlist with ID ' + playlistId + ' is unavailable.');
+                }
+            })
+            .catch(error => console.error('Error fetching playlist details:', error));
+        }
+       
+        function handleButtonClick(videoId) {
+            var youtubeUrl = 'https://www.youtube.com/watch?v=' + videoId;
+            var videoUrlElement = document.getElementById('videoUrl_' + videoId);
+            videoUrlElement.textContent = 'Loading...'; 
+            var ratingButton = document.getElementsByClassName('rating'+videoId)[0];
+            ratingButton.style.display = 'none';
+            var apiUrl = '/submit?url=' + encodeURIComponent(youtubeUrl);
+            fetch(apiUrl, {
+                method: 'GET'
+            })
+            .then(response => response.text())
+            .then(data => {
+                var rating = parseFloat(data);
+                var fullStars = Math.floor(rating); 
+                var decimalPart = rating - fullStars; 
+                var starString = '';
+                var star=0;
+                for (var j = 0; j < fullStars; j++) {
+                    starString += '<i class="fas fa-star"></i>';
+                    star+=1;
+                }
+
+                if (decimalPart > 0) {
+                    if (decimalPart >= 0.7) {
+                        starString += '<i class="fas fa-star"></i>'; 
+                        star+=1;
+                    } else if (decimalPart >= 0.29) {
+                        starString += '<i class="fas fa-star-half-alt"></i>'; 
+                        star+=1;
+                }
+            }
+                while(star<5){
+                    starString += '<i class="far fa-star"></i>';
+                    star+=1;
+                }
+
+                videoUrlElement.innerHTML = starString+"  "+ data+'/5';
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function handleButtonClickPlaylist(playlistId) {
+            var youtubeUrl = 'https://www.youtube.com/playlist?list=' + playlistId;
+            var videoUrlElement = document.getElementById('videoUrl_' + playlistId);
+            videoUrlElement.textContent = 'Loading...';
+            var ratingButton = document.getElementsByClassName('rating'+playlistId)[0];
+            ratingButton.style.display = 'none'; 
+        
+            var apiUrl = '/submit?url=' + encodeURIComponent(youtubeUrl);
+            fetch(apiUrl, {
+                method: 'GET'
+            })
+            .then(response => response.text())
+            .then(data => {
+                var rating = parseFloat(data);
+                var fullStars = Math.floor(rating); 
+                var decimalPart = rating - fullStars; 
+                var starString = '';
+                var star=0;
+                for (var j = 0; j < fullStars; j++) {
+                    starString += '<i class="fas fa-star"></i>';
+                    star+=1;
+                }
+
+                if (decimalPart > 0) {
+                    if (decimalPart >= 0.7) {
+                        starString += '<i class="fas fa-star"></i>';
+                        star+=1;
+                    } else if (decimalPart >= 0.29) {
+                        starString += '<i class="fas fa-star-half-alt"></i>';
+                        star+=1;
+                }
+            }
+                while(star<5){
+                    starString += '<i class="far fa-star"></i>';
+                    star+=1;
+                }
+
+                videoUrlElement.innerHTML = starString +"&nbsp;&nbsp;&nbsp;&nbsp;"+ data+'/5';
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function search(event) {
+            var v = document.getElementsByClassName("vsp")[0];
+            v.style.display ="block";
+            event.preventDefault();
+            var searchInput = document.getElementById("searchInput").value;
+            if (searchInput.trim() !== "") {
+                var apiUrl = 'https://www.googleapis.com/youtube/v3/search?key=' + apiKey + '&q=' + searchInput + '&part=snippet&type=video&maxResults=52';
+
+                fetch(apiUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("data",data)
+                        var videosContainer = document.getElementById('videosContainer');
+                        videosContainer.innerHTML = ''; 
+                var videoIds = data.items.map(item => item.id.videoId);
+                videoIds.forEach(videoId => {
+                    getVideoTitle(videoId, videosContainer);
+                });
+            })
+            .catch(error => console.error('Error fetching search results:', error));
+            }
+        }
+        
+        function handleSelectChange() {
+            var selectedValue = document.getElementById("selectLanguage").value;
+            recommended(selectedValue);
+        }
+
+        function recommended(selectedValue){
+            event.preventDefault()
+            var s = document.getElementsByClassName("vp")[0];
+            s.style.display ="block";
+            fetch('/recommend', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ language: selectedValue })
+            })
+            .then(response => response.json()) 
+            .then(result => {
+                var v=document.getElementsByClassName('hidevideos')[0];
+                v.style.display="block";
+                var result = result.result;
+                var videoIds = result.map(res => res.url.split('=')[1]);
+                var ratings = result.map(res => res.rating);
+
+                var videosContainer = document.getElementById('videosContainer');
+                videosContainer.innerHTML = ''; 
+
+                videoIds.forEach((videoId, index) => {
+                    var rating = ratings[index];
+                    getVideoDetails1(videoId, rating,index, videosContainer);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+        }  
+
+        function videor(event){
+            event.preventDefault();
+            var selectedValue = document.getElementById("selectLanguage").value;
+            fetch('/recommend', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ language: selectedValue })
+            })
+            .then(response => response.json()) 
+            .then(result => {
+                var v=document.getElementsByClassName('hidevideos')[0];
+                v.style.display="block";
+                var result = result.result;
+                var videoIds = result.map(res => res.url.split('=')[1]);
+                var ratings = result.map(res => res.rating);
+
+                var videosContainer = document.getElementById('videosContainer');
+                videosContainer.innerHTML = ''; 
+
+                videoIds.forEach((videoId, index) => {
+                    var rating = ratings[index];
+                    getVideoDetails1(videoId, rating,index, videosContainer);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+        }  
+
+        function playlistr(event){
+            event.preventDefault();
+            var selectedValue = document.getElementById("selectLanguage").value;
+            selectedValue+="p";
+            fetch('/recommend', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ language: selectedValue })
+            })
+            .then(response => response.json()) 
+            .then(result => {
+                var v=document.getElementsByClassName('hidevideos')[0];
+                v.style.display="block";
+                var result = result.result;
+                var videoIds = result.map(res => res.url.split('=')[1]);
+                var ratings = result.map(res => res.rating);
+
+                var videosContainer = document.getElementById('videosContainer');
+                videosContainer.innerHTML = ''; 
+
+                videoIds.forEach((videoId, index) => {
+                    var rating = ratings[index];
+                    getPlaylistDetails1(videoId, rating,index, videosContainer);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+        }  
+
+        function getVideoDetails1(videoId, rating,index,container) {
+            console.log(videoId)
+            fetch('https://www.googleapis.com/youtube/v3/videos?id=' + videoId + '&key='+apiKey+'&part=contentDetails')
+            .then(response => response.json())
+            .then(data => {
+                if (data.items && data.items.length > 0 && data.items[0].contentDetails) {
+                    var duration = data.items[0].contentDetails.duration;
+                    var durationSeconds = parseDuration(duration);
+                    if (durationSeconds > 300) {
+                        getVideoTitle1(videoId, rating,index,container); 
+                    }
+                } else {
+                    console.log('Video with ID1 ' + videoId + ' is unavailable.');
+                }
+            })
+            .catch(error => console.error('Error fetching video details:', error));
+        }
+
+        function getVideoTitle1(videoId, rating,index,container) {
+            fetch('https://www.googleapis.com/youtube/v3/videos?id=' + videoId + '&key='+apiKey+'&part=snippet,status')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.items && data.items.length > 0 && data.items[0].snippet.title) {
+                        var title = data.items[0].snippet.title;
+                        var status = data.items[0].status;
+                        if (status.embeddable) {
+                            container.innerHTML += '<div class="video"><iframe width="560" height="315" src="https://www.youtube.com/embed/' + videoId + '" frameborder="0" allowfullscreen></iframe><h3>' + title + '</h3><p class="video-url" id="videoUrl_' + videoId + '"></p></div>';
+                            generateStarRating(rating, videoId);
+                            var videoElement = document.querySelector('.video:nth-child(' + (index + 1) + ')');
+                            if (videoElement) {
+                                container.appendChild(videoElement);
+                            }
+                        } else {
+                            console.log('Video with ID2 ' + videoId + ' does not allow embedding. Skipping...');
+                        }
+                    } else {
+                        console.log('Video with ID ' + videoId + ' is unavailable. Skipping...');
+                    }
+                })
+                .catch(error => console.error('Error fetching video title:', error));
+        }
+
+        function getPlaylistDetails1(videoId, rating,index,container) {
+            fetch('https://www.googleapis.com/youtube/v3/playlists?id=' + videoId + '&key='+apiKey+'&part=snippet')
+            .then(response => response.json())
+            .then(data => {
+                if (data.items && data.items.length > 0 && data.items[0].snippet) {
+                    var title = data.items[0].snippet.title;
+                    container.innerHTML += '<div class="video"><iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?list=' + videoId + '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><h3>' + title + '</h3><p class="video-url" id="videoUrl_' + videoId + '"></p></div>';
+                    generateStarRating(rating, videoId);
+                            var videoElement = document.querySelector('.video:nth-child(' + (index + 1) + ')');
+                            if (videoElement) {
+                                container.appendChild(videoElement);
+                            }
+                } else {
+                    console.log('Playlist with ID ' + playlistId + ' is unavailable.');
+                }
+            })
+            .catch(error => console.error('Error fetching playlist details:', error));
+        }
+
+        function generateStarRating(rat,videoId) {
+            var rating = parseFloat(rat);
+            var videoUrlElement = document.getElementById('videoUrl_' + videoId);
+                var fullStars = Math.floor(rating); 
+                var decimalPart = rating - fullStars; 
+                var starString = '';
+                var star=0;
+                for (var j = 0; j < fullStars; j++) {
+                    starString += '<i class="fas fa-star"></i>';
+                    star+=1;
+                }
+
+                if (decimalPart > 0) {
+                    if (decimalPart >= 0.7) {
+                        starString += '<i class="fas fa-star"></i>'; 
+                        star+=1;
+                    } else if (decimalPart >= 0.29) {
+                        starString += '<i class="fas fa-star-half-alt"></i>'; 
+                        star+=1;
+                }
+            }
+                while(star<5){
+                    starString += '<i class="far fa-star"></i>';
+                    star+=1;
+                }
+                videoUrlElement.innerHTML+=starString+"&nbsp;&nbsp;&nbsp;&nbsp;"+ rat+'/5'
+            
+        }
+
+        var initialVideoIds = ['GhQdlIFylQ8','NT299zIk2JY', 'BGTx91t8q50', 'EjavYOFoJJ0', 'xk4_1vDrzzo','B31LgI4Y4DQ','bxRVz8zklWM','pkYVOmU3MgA','7S_tz1z_5bA','HXV3zeQKqGY','G3e-cpL7ofc','kqtD5dpn9C8','JMUxmLyrhSk','qz0aGYrrlhU','zfiSAzpy9NM','SqcY0GlETPk','SXVrkIUXXw8'];
+        var videosContainer = document.getElementById('videosContainer');
+        initialVideoIds.forEach(videoId => {
+            getVideoTitle(videoId, videosContainer);
+        });
+
+        document.getElementById('searchForm').addEventListener('submit', search);
+        document.getElementById('searchButton').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var selectedValue = document.getElementById("selectLanguage").value;
+            recommended(selectedValue);
+        });
+
+        document.getElementById("videos").addEventListener("click",video)
+        document.getElementById("shots").addEventListener("click",shot)
+        document.getElementById("playlists").addEventListener("click",playlist) 
+        document.getElementById("videosr").addEventListener("click",videor)
+        document.getElementById("playlistsr").addEventListener("click",playlistr) 
+        
+        document.getElementById('searchInput').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                search(event);
+            }
+        });
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                var modal = document.getElementsByClassName("modal")[0];
+                modal.style.display = "none";
+            }
+        });
+        
+    </script>
+</body>
+</html>
+
